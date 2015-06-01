@@ -34,8 +34,8 @@
             <div class="row">
                 <div class="col-md-8"></div>
                 <div class="col-md-4">
-                    <div class="btn btn-success">Add</div>
-                    <div class="btn btn-danger">Delete selected</div>
+                    <button type="button" data-toggle="modal" data-target="#add-item-mdl" class="btn btn-success">Add</button>
+                    <button class="btn btn-danger">Delete selected</button>
                 </div>
             </div>
             <table class="table">
@@ -68,6 +68,102 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+
+        <!-- Modals -->
+        <div class="modal fade" id="add-item-mdl" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h2 class="modal-title" id="myModalLabel">Add new item</h2>
+              </div>
+              <div class="modal-body">
+                  <form class="form-horizontal">
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Registration Type</label>
+                            <div class="col-lg-10">
+                                <div class="radio radio-primary">
+                                    <label>
+                                        <input type="radio" name="type" value="basic" checked="">
+                                        Basic
+                                    </label>
+                                </div>
+                                <div class="radio radio-primary">
+                                    <label>
+                                        <input type="radio" name="type" value="mean">
+                                        Mean
+                                    </label>
+                                </div>
+                                <div class="radio radio-primary">
+                                    <label>
+                                        <input type="radio" name="type" value="extended">
+                                        Extended
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">First name</label>
+                            <div class="col-lg-10">
+                                <input type="text" class="form-control" placeholder="e.g. Alice" data-field="firstName">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Last name</label>
+                            <div class="col-lg-10">
+                                <input type="text" class="form-control" placeholder="e.g. Smith" data-field="lastName">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Email</label>
+                            <div class="col-lg-10">
+                                <input type="email" class="form-control" placeholder="alice@smith.com" data-field="email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Phone</label>
+                            <div class="col-lg-10">
+                                <input type="text" pattern="[789][0-9]{9}" class="form-control" placeholder="" data-field="phone">
+                            </div>
+                        </div>
+                        <div class="form-group" data-type="mean">
+                            <label class="col-lg-2 control-label">Address</label>
+                            <div class="col-lg-10">
+                                <input type="text" class="form-control" placeholder="" data-field="address">
+                            </div>
+                        </div>
+                        <div class="form-group" data-type="mean">
+                            <label class="col-lg-2 control-label">Biography</label>
+                            <div class="col-lg-10">
+                                <textarea class="form-control" data-name="bio"></textarea>
+                                <span class="help-block" placeholder="Something about you"></span>
+                            </div>
+                        </div>
+                        <div class="form-group" data-type="extended">
+                            <label class="col-lg-2 control-label">Avatar</label>
+                            <div class="col-lg-10">
+                                <input type="text" class="form-control" placeholder="" data-field="avatar">
+                            </div>
+                        </div>
+                        <div class="form-group" data-type="extended">
+                            <label class="col-lg-2 control-label">Skype</label>
+                            <div class="col-lg-10">
+                                <input type="text" class="form-control" placeholder="" data-field="skype">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-10 col-lg-offset-2">
+                                <button class="btn btn-default">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Twitter Bootstrap -->

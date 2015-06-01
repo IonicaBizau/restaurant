@@ -1,15 +1,30 @@
 $(document).ready(function () {
     function Agenda() {
+        var self = this;
         this.ui = {
             table: $("table")
           , tbody: $("table > tbody")
           , template: null
+          , type: $("input[name='type']")
         };
         var $rowTemplate = $(".template", this.ui.table);
         this.ui.template = $rowTemplate.clone().removeClass("template");
         $rowTemplate.remove();
         this.render();
+        this.ui.type.on("change", function () {
+            self.changeType(this.value);
+        });
+        this.changeType("basic");
     }
+
+    Agenda.prototype.changeType = function (type) {
+        $("[data-type]").show();
+        if (type === "basic") {
+            $("[data-type]").hide();
+        } else if (type === "mean") {
+            $("[data-type='extended']").hide();
+        }
+    };
 
     Agenda.prototype.getData = function () {
         var data = {};
