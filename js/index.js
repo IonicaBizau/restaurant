@@ -98,6 +98,9 @@ $(document).ready(function () {
     Restaurant.prototype.addClient = function (item, table) {
         var data = this.getData();
         data.items[table].clients.push(item);
+        if (data.items[table].clients.length > data.items[table].size) {
+            return alert("Table full.");
+        }
         this.saveData(data);
     };
 
