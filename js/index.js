@@ -1,5 +1,11 @@
 $(document).ready(function () {
 
+    function hashChange() {
+        var hash = location.hash.substr(1);
+        if (!hash) { return; }
+        agenda.view(hash)
+    }
+
     function Reg(data) {
         Object.keys(data).forEach(function (c) {
             this[c] = data[c];
@@ -14,6 +20,7 @@ $(document).ready(function () {
           , template: null
           , type: $("input[name='type']")
           , form: $("form")
+          , viewMdl: $("#view-item-mdl")
         };
         var $rowTemplate = $(".template", this.ui.table);
         this.ui.template = $rowTemplate.clone().removeClass("template");
@@ -23,6 +30,7 @@ $(document).ready(function () {
             self.changeType(this.value);
             self.type = this.value;
         });
+        this.type = "basic";
         this.ui.form.serializer().on("serializer:data", function (e, formData) {
             self.add({
                 type: self.type
@@ -32,6 +40,7 @@ $(document).ready(function () {
               , phone: formData.phone
               , address: formData.address
               , avatar: formData.avatar
+              , bio: formData.bio
               , hangouts: formData.hangouts
             });
             $(".modal").modal("hide");
@@ -112,5 +121,38 @@ $(document).ready(function () {
         this.ui.tbody.html(html);
     };
 
+    Agenda.prototype.getByEmail = function (email) {
+        var data = this.getData();
+        var items = data.items || []
+        return items.filter(function (c) {
+            return c.email === email;
+        })[0];
+    };
+
+    Agenda.prototype.view = function (email) {
+        var item = this.getByEmail(email);
+        if (!item) {
+            return this.ui.viewMdl.html("<div class='alert alert-danger'>No item found.</div>");
+        }
+        var $body = $(".modal-body", this.ui.viewMdl);
+        $body.empty();
+        $body.append($("<h1>", { text: item.firstName + " " + item.lastName }));
+        $body.append($("<a>", { href: "mailto:" + item.email, text: item.email }));
+        $body.append($("<p>", { text: "Phone: " + item.phone }));
+        if (item.type === "mean" || item.type === "extended") {
+            $body.append($("<p>", { text: "Address: " + item.address }));
+            $body.append($("<p>", { text: "Biography: " + item.bio }));
+        }
+        if (item.type === "extended") {
+            $body.append($("<img>", { src: item.avatar }));
+            $body.append($("<p>", { text: "Hangouts: " + item.hangouts }));
+        }
+
+        this.ui.viewMdl.modal("show");
+    };
+
     window.agenda = new Agenda();
+    $(window).on("hashchange", hashChange);
+    hashChange();
+
 });
