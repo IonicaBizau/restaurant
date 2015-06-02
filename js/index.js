@@ -66,7 +66,7 @@ $(document).ready(function () {
 
         $(".btn-delete").on("click", function () {
             self.deleteSelected();
-            this.render(this.getData(), this.ui.tblTableTmpl, $("tbody", this.ui.tblTable));
+            self.render(self.getData(), self.ui.tblTableTmpl, $("tbody", self.ui.tblTable));
         });
     }
 
