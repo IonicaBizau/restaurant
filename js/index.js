@@ -3,7 +3,7 @@ $(document).ready(function () {
     function hashChange() {
         var hash = location.hash.substr(1);
         if (!hash) { return; }
-        agenda.view(hash)
+        restaurant.view(hash)
     }
 
     function Reg(data) {
@@ -12,86 +12,97 @@ $(document).ready(function () {
         }.bind(this));
     }
 
-    function Agenda() {
+    function Restaurant() {
         var self = this;
+
         this.ui = {
-            table: $("table")
-          , tbody: $("table > tbody")
-          , template: null
-          , type: $("input[name='type']")
-          , form: $("form")
-          , viewMdl: $("#view-item-mdl")
+            tblTable: $(".table.table-tbl")
+          , tblClients: $(".table.clients-tbl")
+          , viewTableMdl: $("#view-table-mdl")
+          , tblTableTmpl: null
+          , tblClientTmpl: null
         };
-        var $rowTemplate = $(".template", this.ui.table);
-        this.ui.template = $rowTemplate.clone().removeClass("template");
-        $rowTemplate.remove();
-        this.render();
-        this.ui.type.on("change", function () {
-            self.changeType(this.value);
-            self.type = this.value;
+
+        $("td a", this.ui.tblTable).on("click", function () {
+            var hash = $(this).attr("href").substr(1);
+            location.hash = hash;
+            hashChange();
+            return false;
         });
-        this.type = "basic";
-        this.ui.form.serializer().on("serializer:data", function (e, formData) {
-            self.add({
-                type: self.type
-              , firstName: formData.firstName
-              , lastName: formData.lastName
-              , email: formData.email
-              , phone: formData.phone
-              , address: formData.address
-              , avatar: formData.avatar
-              , bio: formData.bio
-              , hangouts: formData.hangouts
+
+        var $rowTemplate = $(".template", this.ui.tblTable);
+        this.ui.tblTableTmpl = $rowTemplate.clone().removeClass("template");
+        $rowTemplate.remove();
+
+        $rowTemplate = $(".template", this.ui.tblClients);
+        this.ui.tblClientTmpl = $rowTemplate.clone().removeClass("template");
+        $rowTemplate.remove();
+
+        this.render(this.getData(), this.ui.tblTableTmpl, $("tbody", this.ui.tblTable));
+
+        // New table
+        $("#add-table-mdl form").serializer().on("serializer:data", function (e, formData) {
+            self.addTable({
+                name: formData.name
+              , size: formData.size
+              , clients: []
             });
             $(".modal").modal("hide");
-            self.render();
+            self.render(self.getData(), self.ui.tblTableTmpl, $("tbody", self.ui.tblTable));
         });
-        this.changeType("basic");
+
+        // New client
+        $("#add-client-mdl form").serializer().on("serializer:data", function (e, formData) {
+            $(".modal").modal("hide");
+            if (!formData.table) { return alert("Create a table first"); }
+            self.addClient({
+                name: formData.name
+            }, formData.table);
+        });
+
         $("th input[type='checkbox']").on("change", function () {
             $("td input[type='checkbox']").prop("checked", this.checked);
         });
+
         $(".btn-delete").on("click", function () {
             self.deleteSelected();
-            self.render();
+            this.render(this.getData(), this.ui.tblTableTmpl, $("tbody", this.ui.tblTable));
         });
     }
 
-    Agenda.prototype.changeType = function (type) {
-        $("[data-type]").show().removeAttr("required");
-        if (type === "basic") {
-            $("[data-type]").hide();
-        } else if (type === "mean") {
-            $("[data-type='extended']").hide();
-        }
-    };
-
-    Agenda.prototype.getData = function () {
+    Restaurant.prototype.getData = function () {
         var data = {};
         try {
-            data = JSON.parse(localStorage.getItem("agenda"))
+            data = JSON.parse(localStorage.getItem("restaurant"))
         } catch (e) {}
-        return data || {};
+        return data || {
+            items: []
+        };
     };
 
-    Agenda.prototype.saveData = function (data) {
-        localStorage.setItem("agenda", JSON.stringify(data));
+    Restaurant.prototype.saveData = function (data) {
+        localStorage.setItem("restaurant", JSON.stringify(data));
         return data;
     };
 
-    Agenda.prototype.clear = function () {
+    Restaurant.prototype.clear = function () {
         this.ui.tbody.empty();
     };
 
-    Agenda.prototype.add = function (item) {
+    Restaurant.prototype.addTable = function (item) {
         var data = this.getData();
-        data.items = data.items || [];
         data.items.push(new Reg(item));
         this.saveData(data);
     };
 
-    Agenda.prototype.deleteSelected = function () {
+    Restaurant.prototype.addClient = function (item, table) {
         var data = this.getData();
-        data.items = data.items || [];
+        data.items[table].clients.push(item);
+        this.saveData(data);
+    };
+
+    Restaurant.prototype.deleteSelected = function () {
+        var data = this.getData();
         $("td input[type='checkbox']:checked").each(function () {
             var $row = $(this).closest("tr");
             var id = $("[data-id]", $row).attr("data-id");
@@ -101,57 +112,55 @@ $(document).ready(function () {
         this.saveData(data);
     };
 
-    Agenda.prototype.render = function (data) {
+    Restaurant.prototype.render = function (data, template, container) {
+
         var self = this;
         data = data || this.getData();
-        var items = data.items || []
+        var items = data.items || data || []
           , html = ""
           ;
 
-        items.sort(function (a, b) {
-            return a.name > b.name ? 1 : -1;
-        });
+        if (!Array.isArray(items)) {
+            items = [];
+        }
 
+        var $options = [];
         items.forEach(function (c, i) {
             c.i = i + 1;
             c.id = i;
-            html += Barbe(self.ui.template[0].outerHTML, c);
+            html += Barbe(template[0].outerHTML, c);
+            $options.push($("<option>", { value: c.id, text: c.name }));
         });
 
-        this.ui.tbody.html(html);
+        if (container.closest(self.ui.tblTable).length) {
+            $("select").html($options);
+        }
+
+        container.html(html);
     };
 
-    Agenda.prototype.getByEmail = function (email) {
+    Restaurant.prototype.getByName = function (name) {
         var data = this.getData();
         var items = data.items || []
         return items.filter(function (c) {
-            return c.email === email;
+            return c.name === name;
         })[0];
     };
 
-    Agenda.prototype.view = function (email) {
-        var item = this.getByEmail(email);
+    Restaurant.prototype.view = function (name) {
+        var item = this.getByName(name);
         if (!item) {
-            return this.ui.viewMdl.html("<div class='alert alert-danger'>No item found.</div>");
-        }
-        var $body = $(".modal-body", this.ui.viewMdl);
-        $body.empty();
-        $body.append($("<h1>", { text: item.firstName + " " + item.lastName }));
-        $body.append($("<a>", { href: "mailto:" + item.email, text: item.email }));
-        $body.append($("<p>", { text: "Phone: " + item.phone }));
-        if (item.type === "mean" || item.type === "extended") {
-            $body.append($("<p>", { text: "Address: " + item.address }));
-            $body.append($("<p>", { text: "Biography: " + item.bio }));
-        }
-        if (item.type === "extended") {
-            $body.append($("<img>", { src: item.avatar }));
-            $body.append($("<p>", { text: "Hangouts: " + item.hangouts }));
+            return alert("No tables found.");
         }
 
-        this.ui.viewMdl.modal("show");
+
+        $(".modal-title", this.ui.viewTableMdl).text(item.name);
+        $(".size", this.ui.viewTableMdl).text(item.size);
+        this.render(item.clients || [], this.ui.tblClientTmpl, $("tbody", this.ui.tblClients));
+        this.ui.viewTableMdl.modal("show");
     };
 
-    window.agenda = new Agenda();
+    window.restaurant = new Restaurant();
     $(window).on("hashchange", hashChange);
     hashChange();
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Info Agenda</title>
+        <title>Restaurant</title>
 
         <!-- Mobile support -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,27 +25,27 @@
 
         <style>
             td, th {
-              vertical-align: middle !important;
+                vertical-align: middle !important;
             }
         </style>
     </head>
     <body>
         <div class="container">
-            <h1>Info Agenda</h1>
+            <h1>Restaurant</h1>
             <div class="row">
-                <div class="col-md-8"></div>
-                <div class="col-md-4 text-right">
-                    <button type="button" data-toggle="modal" data-target="#add-item-mdl" class="btn btn-success">Add</button>
+                <div class="col-md-4"></div>
+                <div class="col-md-8 text-right">
+                    <button type="button" data-toggle="modal" data-target="#add-client-mdl" class="btn btn-success">Add client</button>
+                    <button type="button" data-toggle="modal" data-target="#add-table-mdl" class="btn btn-success">Add table</button>
                     <button class="btn btn-delete btn-danger">Delete selected</button>
                 </div>
             </div>
-            <table class="table">
+            <table class="table table-tbl">
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Registration type</th>
+                        <th>Table name</th>
+                        <th>Size</th>
                         <th></th>
                         <th>
                             <div class="checkbox checkbox-primary">
@@ -59,10 +59,9 @@
                 <tbody>
                     <tr class="template">
                         <td data-id="{id}">{i}</td>
-                        <td>{firstName} {lastName}</td>
-                        <td>{email}</td>
-                        <td>{type}</td>
-                        <td><a href="#{email}" class="btn btn-primary">View</a></td>
+                        <td>{name}</td>
+                        <td>{size}</td>
+                        <td><a href="#{name}" class="btn btn-primary">View</a></td>
                         <td>
                             <div class="checkbox checkbox-primary">
                                 <label>
@@ -76,112 +75,117 @@
         </div>
 
         <!-- Modals -->
-        <div class="modal fade" id="add-item-mdl" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h2 class="modal-title" id="myModalLabel">Add new item</h2>
-              </div>
-              <div class="modal-body">
-                  <form class="form-horizontal">
-                    <fieldset>
-                        <div class="form-group">
-                            <label class="col-lg-2 control-label">Registration Type</label>
-                            <div class="col-lg-10">
-                                <div class="radio radio-primary">
-                                    <label>
-                                        <input type="radio" name="type" value="basic" checked="">
-                                        Basic
-                                    </label>
+        <div class="modal fade" id="add-table-mdl" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h2 class="modal-title" id="myModalLabel">Add new table</h2>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">Name</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" placeholder="e.g. Alice" data-field="name" required>
+                                    </div>
                                 </div>
-                                <div class="radio radio-primary">
-                                    <label>
-                                        <input type="radio" name="type" value="mean">
-                                        Mean
-                                    </label>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">Size</label>
+                                    <div class="col-lg-10">
+                                        <input type="number" class="form-control" placeholder="5" data-field="size" data-convert-to="number" required>
+                                    </div>
                                 </div>
-                                <div class="radio radio-primary">
-                                    <label>
-                                        <input type="radio" name="type" value="extended">
-                                        Extended
-                                    </label>
+                                <div class="form-group">
+                                    <div class="col-lg-10 col-lg-offset-2">
+                                        <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+                                        <button type="submit" type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-lg-2 control-label">First name</label>
-                            <div class="col-lg-10">
-                                <input type="text" class="form-control" placeholder="e.g. Alice" data-field="firstName" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-lg-2 control-label">Last name</label>
-                            <div class="col-lg-10">
-                                <input type="text" class="form-control" placeholder="e.g. Smith" data-field="lastName" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-lg-2 control-label">Email</label>
-                            <div class="col-lg-10">
-                                <input type="email" class="form-control" placeholder="alice@smith.com" data-field="email" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-lg-2 control-label">Phone</label>
-                            <div class="col-lg-10">
-                                <input type="text" class="form-control" placeholder="" data-field="phone">
-                            </div>
-                        </div>
-                        <div class="form-group" data-type="mean">
-                            <label class="col-lg-2 control-label">Address</label>
-                            <div class="col-lg-10">
-                                <input type="text" class="form-control" placeholder="" data-field="address">
-                            </div>
-                        </div>
-                        <div class="form-group" data-type="mean">
-                            <label class="col-lg-2 control-label">Biography</label>
-                            <div class="col-lg-10">
-                                <textarea class="form-control" data-name="bio"></textarea>
-                                <span class="help-block" placeholder="Something about you"></span>
-                            </div>
-                        </div>
-                        <div class="form-group" data-type="extended">
-                            <label class="col-lg-2 control-label">Avatar</label>
-                            <div class="col-lg-10">
-                                <input type="text" class="form-control" placeholder="" data-field="avatar">
-                            </div>
-                        </div>
-                        <div class="form-group" data-type="extended">
-                            <label class="col-lg-2 control-label">Hangouts</label>
-                            <div class="col-lg-10">
-                                <input type="text" class="form-control" placeholder="" data-field="hangouts">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-lg-10 col-lg-offset-2">
-                                <button type="button" class="btn btn-default">Cancel</button>
-                                <button type="submit" type="submit" class="btn btn-primary">Submit</button>
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
-              </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
 
-        <div class="modal fade" id="view-item-mdl" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              </div>
-              <div class="modal-body">
-
-              </div>
+        <div class="modal fade" id="view-table-mdl" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h2 class="modal-title"></h2>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">Size</label>
+                                    <div class="col-lg-10">
+                                        <span class="size"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">Clients</label>
+                                    <div class="col-lg-10">
+                                        <table class="table col-lg-10 clients-tbl">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Name</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="template">
+                                                    <td data-id="{id}">{i}</td>
+                                                    <td>{name}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
             </div>
-          </div>
+        </div>
+
+        <div class="modal fade" id="add-client-mdl" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h2 class="modal-title" id="myModalLabel">Add new table</h2>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">Name</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" placeholder="e.g. Alice" data-field="name" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">Table</label>
+                                    <div class="col-lg-10">
+                                        <select data-field="table">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-10 col-lg-offset-2">
+                                        <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+                                        <button type="submit" type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Twitter Bootstrap -->
