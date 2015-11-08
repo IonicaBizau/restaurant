@@ -1,4 +1,5 @@
 # restaurant [![Support this project][donate-now]][paypal-donations]
+
 An experiment using material design for a fake restaurant application.
 
 [![restaurant](http://i.imgur.com/V3A8iI4.png)](http://ionicabizau.github.io/restaurant)
