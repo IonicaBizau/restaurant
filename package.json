@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/IonicaBizau/restaurant",
   "blah": {
-      "ex_img": "http://i.imgur.com/V3A8iI4.png"
+    "ex_img": "http://i.imgur.com/V3A8iI4.png",
+    "ex_url": "http://ionicabizau.github.io/restaurant"
   }
 }
