@@ -1,6 +1,6 @@
 {
   "name": "restaurant",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "An experiment using material design for a fake restaurant application.",
   "main": "js/index.js",
   "scripts": {
@@ -25,5 +25,17 @@
   "blah": {
     "ex_img": "http://i.imgur.com/V3A8iI4.png",
     "ex_url": "http://ionicabizau.github.io/restaurant"
-  }
+  },
+  "files": [
+    "bin/",
+    "app/",
+    "lib/",
+    "dist/",
+    "src/",
+    "resources/",
+    "menu/",
+    "scripts/",
+    "cli.js",
+    "index.js"
+  ]
 }
