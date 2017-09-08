@@ -1,6 +1,6 @@
 {
   "name": "restaurant",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "An experiment using material design for a fake restaurant application.",
   "main": "js/index.js",
   "scripts": {
@@ -36,6 +36,9 @@
     "resources/",
     "menu/",
     "cli.js",
-    "index.js"
+    "index.js",
+    "bloggify.js",
+    "bloggify.json",
+    "bloggify/"
   ]
 }
