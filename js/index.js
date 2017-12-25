@@ -29,6 +29,11 @@ $(document).ready(function () {
             hashChange();
             return false;
         });
+        this.ui.viewTableMdl.on('hidden.bs.modal', function () {
+            location.hash = "";
+            hashChange();
+        })
+
 
         var $rowTemplate = $(".template", this.ui.tblTable);
         this.ui.tblTableTmpl = $rowTemplate.clone().removeClass("template");
